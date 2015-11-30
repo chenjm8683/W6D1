@@ -7,6 +7,7 @@ var sum = function() {
   return result;
 };
 
+// myBind
 Function.prototype.myBind = function() {
   var args = [].slice.call(arguments);
   args = args.slice(1);
@@ -18,26 +19,61 @@ Function.prototype.myBind = function() {
   };
 };
 
-function Cat(name) {
-  this.name = name;
-}
-
-Cat.prototype.says = function (sound) {
-  console.log(this.name + " says " + sound + "!");
+// curriedSum
+var curriedSum = function(numArgs) {
+  var nums = [];
+  var _curriedSum = function (num) {
+    nums.push(num);
+    if (nums.length === numArgs) {
+      var result = 0;
+      nums.forEach(function(n) {
+        result += n;
+      });
+      return result;
+    } else {
+      return _curriedSum;
+    }
+  };
+  return _curriedSum;
 };
 
-var markov = new Cat("Markov");
-var breakfast = new Cat("Breakfast");
+// curry
+Function.prototype.curry = function(numArgs) {
+  var originalFunc = this;
+  var args = [];
+  var _curried = function (el) {
+    args.push(el);
+    if (args.length === numArgs) {
+     return originalFunc.apply(this, args);
+    } else {
+      return _curried;
+    }
+  };
+  return _curried;
+};
 
-markov.says("meow");
-// Markov says meow!
 
-markov.says.myBind(breakfast, "meow")();
-// Breakfast says meow!
-
-markov.says.myBind(breakfast)("meow");
-// Breakfast says meow!
-
-var notMarkovSays = markov.says.myBind(breakfast);
-notMarkovSays("meow");
-// Breakfast says meow!
+//
+// function Cat(name) {
+//   this.name = name;
+// }
+//
+// Cat.prototype.says = function (sound) {
+//   console.log(this.name + " says " + sound + "!");
+// };
+//
+// var markov = new Cat("Markov");
+// var breakfast = new Cat("Breakfast");
+//
+// markov.says("meow");
+// // Markov says meow!
+//
+// markov.says.myBind(breakfast, "meow")();
+// // Breakfast says meow!
+//
+// markov.says.myBind(breakfast)("meow");
+// // Breakfast says meow!
+//
+// var notMarkovSays = markov.says.myBind(breakfast);
+// notMarkovSays("meow");
+// // Breakfast says meow!
