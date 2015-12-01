@@ -20,4 +20,12 @@
     return [dx, dy];
   };
 
+  Asteroids.Util.distance = function (obj1, obj2) {
+    var distance = Math.sqrt(
+      Math.pow((obj1.pos[0] - obj2.pos[0]), 2) +
+      Math.pow((obj1.pos[1] - obj2.pos[1]), 2));
+      if (distance === 0) { debugger; }
+    return distance;
+  };
+
 })();
